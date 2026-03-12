@@ -28,6 +28,7 @@ export default function DataGrid() {
 
   const fuse = useMemo(() => {
     if (!rawData) return null;
+
     return new Fuse(rawData, {
       keys: columns,
       threshold: 0.3,
@@ -36,7 +37,7 @@ export default function DataGrid() {
 
   const filteredData = useMemo(() => {
     if (!rawData) return [];
-    
+
     let data = rawData;
 
     if (searchQuery && fuse) {
@@ -45,14 +46,16 @@ export default function DataGrid() {
 
     Object.entries(filters).forEach(([column, value]) => {
       if (value) {
-        data = data.filter((row) => String(row[column]).includes(value));
+        data = data.filter((row) =>
+          String(row[column as keyof DataRow]).includes(value)
+        );
       }
     });
 
     return data;
   }, [rawData, searchQuery, filters, fuse]);
 
-  const parentRef = useRef<HTMLDivElement>(null);
+  const parentRef = useRef<HTMLDivElement | null>(null);
 
   const rowVirtualizer = useVirtualizer({
     count: filteredData.length,
@@ -73,6 +76,7 @@ export default function DataGrid() {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="flex-1 glass px-4 py-2 rounded-lg"
         />
+
         {userRole === "admin" && (
           <button className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600">
             Add Row
@@ -80,10 +84,7 @@ export default function DataGrid() {
         )}
       </div>
 
-      <div
-        ref={parentRef}
-        className="h-[600px] overflow-auto"
-      >
+      <div ref={parentRef} className="h-[600px] overflow-auto">
         <div
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
@@ -92,6 +93,9 @@ export default function DataGrid() {
         >
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             const row = filteredData[virtualRow.index];
+
+            if (!row) return null;
+
             return (
               <div
                 key={virtualRow.index}
@@ -107,7 +111,7 @@ export default function DataGrid() {
               >
                 {columns.map((col) => (
                   <div key={col} className="flex-1 truncate">
-                    {String(row[col])}
+                    {String(row[col as keyof DataRow])}
                   </div>
                 ))}
               </div>
