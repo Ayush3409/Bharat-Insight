@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useStore, departments } from "@/store/useStore";
 

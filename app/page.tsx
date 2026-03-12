@@ -1,4 +1,4 @@
-﻿import Hero from "@/components/landing/Hero";
+import Hero from "@/components/landing/Hero";
 import BentoGrid from "@/components/landing/BentoGrid";
 import Features from "@/components/landing/Features";
 import CTA from "@/components/landing/CTA";

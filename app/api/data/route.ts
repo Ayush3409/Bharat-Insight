@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 // Sample data generator - replace with actual data.gov.in data
 function generateSampleData(dept: string, count: number = 1000) {

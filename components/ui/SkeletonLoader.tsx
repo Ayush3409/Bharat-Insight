@@ -1,4 +1,4 @@
-﻿export default function SkeletonLoader() {
+export default function SkeletonLoader() {
   return (
     <div className="glass rounded-xl p-6 animate-pulse">
       <div className="h-10 bg-white/10 rounded mb-4" />
