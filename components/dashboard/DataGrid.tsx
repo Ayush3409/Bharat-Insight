@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useQuery } from "@tanstack/react-query";
 import Fuse from "fuse.js";
@@ -52,11 +52,11 @@ export default function DataGrid() {
     return data;
   }, [rawData, searchQuery, filters, fuse]);
 
-  const parentRef = useState<HTMLDivElement | null>(null);
+  const parentRef = useRef<HTMLDivElement>(null);
 
   const rowVirtualizer = useVirtualizer({
     count: filteredData.length,
-    getScrollElement: () => parentRef[0],
+    getScrollElement: () => parentRef.current,
     estimateSize: () => 50,
     overscan: 10,
   });
@@ -81,7 +81,7 @@ export default function DataGrid() {
       </div>
 
       <div
-        ref={(el) => (parentRef[0] = el)}
+        ref={parentRef}
         className="h-[600px] overflow-auto"
       >
         <div
